@@ -1,7 +1,6 @@
-import { useScroll } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import BlogTableItem from "../../components/admin/BlogTableitem";
 import { useAppContext } from "../../context/AppContext";
+import BlogTableItem from "../../components/admin/BlogTableItem";
 
 const ListBlog = () => {
   const [blogs, setBlogs] = useState([]);
