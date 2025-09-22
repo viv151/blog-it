@@ -34,7 +34,7 @@ export const getAllBlogsAdmin = async (req, res) => {
 export const getAllComments = async (req, res) => {
     try {
         //returns all comments with their respective blog data as well
-        const comments = await Comment.find({}).populate("Blog").sort({ createdAt: -1 });
+        const comments = await Comment.find({}).populate("blog").sort({ createdAt: -1 });
         res.json({ success: true, comments })
 
     } catch (error) {

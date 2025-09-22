@@ -1,3 +1,4 @@
+import main from "../configs/gemini.js";
 import Blog from "../models/blog.models.js";
 import Comment from "../models/comment.models.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.utils.js";
@@ -63,10 +64,11 @@ const deleteBlogById = async (req, res) => {
 
         //also delete all comments associated with the blog
 
-        await Comment.deleteMany({Blog: id})
+        await Comment.deleteMany({ Blog: id })
         res.json({ success: true, message: 'Blog deleted successfully' })
     } catch (error) {
         res.json({ success: false, message: error.message })
+        console.log(error.message)
     }
 }
 
@@ -96,14 +98,24 @@ const addComment = async (req, res) => {
 
 const getBlogComments = async (req, res) => {
     try {
-        const {blogId} = req.body;
-        const comments = await Comment.find({blog: blogId, isApproved: true})
-        .sort({createdAt: -1})
-        res.json({ success: true, comments})
+        const { blogId } = req.body;
+        const comments = await Comment.find({ blog: blogId, isApproved: true })
+            .sort({ createdAt: -1 })
+        res.json({ success: true, comments })
     } catch (error) {
         res.json({ success: false, message: error.message })
 
     }
 }
 
-export { addBlog, getAllBlogs, getBlogById, deleteBlogById, togglePublish, addComment, getBlogComments }
+const generateContent = async (req, res) => {
+    try {
+        const { prompt } = req.body;
+        const content = await main(prompt + "Generate a blog content for this topic in simple text format")
+        res.json({ success: true, content })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+}
+
+export { addBlog, getAllBlogs, getBlogById, deleteBlogById, togglePublish, addComment, getBlogComments, generateContent }
